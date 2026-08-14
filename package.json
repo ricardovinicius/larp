@@ -1,0 +1,17 @@
+{
+	"name": "larp",
+	"private": true,
+	"packageManager": "pnpm@11.5.0",
+	"scripts": {
+		"prepare": "husky",
+		"lint-staged": "lint-staged",
+		"check:api": "uv --directory api run ruff format --check . && uv --directory api run ruff check .",
+		"test:api": "uv --directory api run pytest",
+		"build:web": "pnpm --dir web build",
+		"validate": "pnpm run check:api && pnpm run test:api && pnpm run build:web"
+	},
+	"devDependencies": {
+		"husky": "^9.1.7",
+		"lint-staged": "^17.3.0"
+	}
+}
