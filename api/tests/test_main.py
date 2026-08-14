@@ -15,3 +15,12 @@ def test_app_metadata_uses_settings() -> None:
     assert application.title == "LARP Test API"
     assert application.version == "9.9.9"
     assert application.state.settings is settings
+
+
+def test_feature_routes_are_in_openapi() -> None:
+    application = create_app(Settings(environment="test", _env_file=None))
+
+    paths = application.openapi()["paths"]
+
+    assert "/api/v1/goals" in paths
+    assert "/api/v1/tasks" in paths

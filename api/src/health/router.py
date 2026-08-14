@@ -1,7 +1,12 @@
-from typing import Literal
+from typing import Annotated, Literal
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
+from sqlalchemy import text
+from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.ext.asyncio import AsyncConnection
+
+from src.core.database import get_connection
 
 router = APIRouter(prefix="/health", tags=["health"])
 
@@ -24,6 +29,14 @@ async def liveness() -> HealthResponse:
     response_model=HealthResponse,
     summary="Check whether the API is ready to receive traffic",
 )
-async def readiness() -> HealthResponse:
-    # Add checks for required infrastructure, such as PostgreSQL, here later.
+async def readiness(
+    connection: Annotated[AsyncConnection, Depends(get_connection)],
+) -> HealthResponse:
+    try:
+        await connection.execute(text("SELECT 1"))
+    except SQLAlchemyError as error:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Database is unavailable",
+        ) from error
     return HealthResponse()
