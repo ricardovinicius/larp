@@ -1,0 +1,70 @@
+# Byte-compiled files and caches
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Native extensions
+*.so
+
+# Distribution and packaging artifacts
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Test and coverage artifacts
+.pytest_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.tox/
+.nox/
+.hypothesis/
+*.cover
+*.py,cover
+
+# Type checker, linter, and formatter caches
+.mypy_cache/
+.pyre/
+.pytype/
+.pyright/
+.ruff_cache/
+.dmypy.json
+dmypy.json
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+
+# Jupyter notebooks
+.ipynb_checkpoints/
+
+# Runtime artifacts
+*.log
+*.pid
+
+# Editor and operating-system files
+.idea/
+.vscode/
+.DS_Store
