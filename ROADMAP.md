@@ -3,8 +3,8 @@
 - [x] Setup the frontend and backend projects with initial organization 
 - [x] Setup the CI/CD pipeline
 - [x] Setup the tools like testing frameworks, linters, etc.
-- [ ] Implement goals and tasks system
-    - [ ] Plan the spec
+- [-] Implement goals and tasks system
+    - [x] Plan the spec
     - [ ] Prototype the design
     - [ ] Code
     - [ ] Test 

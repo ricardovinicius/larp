@@ -18,7 +18,7 @@ Some of core features include:
 ## Tech Stack
 
 - frontend: pnpm + ts + react + tanstack
-- backend: uv + python + fastapi
+- backend: uv + python + fastapi + alembic + sqlalchemy core
 - database: postgresql
 - ci/cd: github actions
 - tests: vitest + pytest
