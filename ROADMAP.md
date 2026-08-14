@@ -1,6 +1,6 @@
 ## Planned Features
 
-- [ ] Setup the frontend and backend projects with initial organization 
+- [-] Setup the frontend and backend projects with initial organization 
 - [ ] Setup the CI/CD pipeline
 - [ ] Setup the tools like testing frameworks, linters, etc.
 - [ ] Implement goals and tasks system
