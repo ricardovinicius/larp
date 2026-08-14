@@ -6,11 +6,15 @@ on:
     paths:
       - "api/**"
       - "web/**"
+      - "compose.yaml"
+      - "package.json"
       - ".github/workflows/ci.yml"
   pull_request:
     paths:
       - "api/**"
       - "web/**"
+      - "compose.yaml"
+      - "package.json"
       - ".github/workflows/ci.yml"
   workflow_dispatch:
 
@@ -29,6 +33,22 @@ jobs:
     defaults:
       run:
         working-directory: api
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: larp
+          POSTGRES_USER: larp
+          POSTGRES_PASSWORD: larp
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U larp -d larp"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      LARP_DATABASE_URL: postgresql+asyncpg://larp:larp@127.0.0.1:5432/larp
 
     steps:
       - name: Check out repository
@@ -53,6 +73,9 @@ jobs:
 
       - name: Lint
         run: uv run ruff check .
+
+      - name: Run migrations
+        run: uv run alembic upgrade head
 
       - name: Test
         run: uv run pytest
@@ -89,6 +112,9 @@ jobs:
 
       - name: Type-check
         run: pnpm typecheck
+
+      - name: Test
+        run: pnpm test
 
       - name: Build
         run: pnpm build
