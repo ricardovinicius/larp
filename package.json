@@ -5,6 +5,8 @@
 	"scripts": {
 		"prepare": "husky",
 		"lint-staged": "lint-staged",
+		"dev:api": "uv --directory api run fastapi dev src/main.py",
+		"dev:web": "pnpm --dir web dev",
 		"check:api": "uv --directory api run ruff format --check . && uv --directory api run ruff check .",
 		"test:api": "uv --directory api run pytest",
 		"build:web": "pnpm --dir web build",
