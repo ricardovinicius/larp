@@ -7,7 +7,7 @@
 
 | Field | Value |
 |---|---|
-| **Status** | Draft |
+| **Status** | Done |
 | **Author** | LARP project |
 | **Created** | 2026-08-14 |
 | **Updated** | 2026-08-14 |
@@ -30,15 +30,15 @@ progression, statistics, and AI-assistant features will build upon.
 
 ### Goals
 
-- [ ] Let the user create, view, edit, and permanently delete goals.
-- [ ] Let the user create, view, edit, move, close, reopen, and permanently delete tasks.
-- [ ] Let a task optionally belong to a goal.
-- [ ] Let a task have one level of subtasks.
-- [ ] Show tasks in switchable list and Kanban views.
-- [ ] Track the workflow states `BACKLOG`, `TODO`, `DOING`, `DONE`, and `CLOSED`.
-- [ ] Calculate goal progress consistently from its associated tasks and subtasks.
-- [ ] Persist all goal and task data in PostgreSQL and expose it through the FastAPI API.
-- [ ] Provide responsive, keyboard-accessible web interfaces for the core workflows.
+- [x] Let the user create, view, edit, and permanently delete goals.
+- [x] Let the user create, view, edit, move, close, reopen, and permanently delete tasks.
+- [x] Let a task optionally belong to a goal.
+- [x] Let a task have one level of subtasks.
+- [x] Show tasks in switchable list and Kanban views.
+- [x] Track the workflow states `BACKLOG`, `TODO`, `DOING`, `DONE`, and `CLOSED`.
+- [x] Calculate goal progress consistently from its associated tasks and subtasks.
+- [x] Persist all goal and task data in PostgreSQL and expose it through the FastAPI API.
+- [x] Provide responsive, keyboard-accessible web interfaces for the core workflows.
 
 ### Non-Goals
 
