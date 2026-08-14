@@ -5,12 +5,15 @@
 	"scripts": {
 		"prepare": "husky",
 		"lint-staged": "lint-staged",
+		"db:up": "docker compose up --detach postgres",
 		"dev:api": "uv --directory api run fastapi dev src/main.py",
 		"dev:web": "pnpm --dir web dev",
 		"check:api": "uv --directory api run ruff format --check . && uv --directory api run ruff check .",
 		"test:api": "uv --directory api run pytest",
+		"check:web": "pnpm --dir web check && pnpm --dir web typecheck",
+		"test:web": "pnpm --dir web test",
 		"build:web": "pnpm --dir web build",
-		"validate": "pnpm run check:api && pnpm run test:api && pnpm run build:web"
+		"validate": "pnpm run check:api && pnpm run test:api && pnpm run check:web && pnpm run test:web && pnpm run build:web"
 	},
 	"devDependencies": {
 		"husky": "^9.1.7",

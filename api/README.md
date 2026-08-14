@@ -13,8 +13,13 @@ uv sync --dev
 Copy `.env.example` to `.env` when local overrides are needed, then run:
 
 ```bash
+pnpm db:up
+uv run alembic upgrade head
 uv run fastapi dev src/main.py
 ```
+
+Run `pnpm db:up` from the repository root. It starts the local PostgreSQL service
+defined in `compose.yaml` and preserves its data in a named Docker volume.
 
 The API documentation is available at `http://127.0.0.1:8000/docs`.
 
@@ -30,6 +35,7 @@ optional `.env` file:
 | `LARP_ENVIRONMENT` | `local` | `local`, `test`, `staging`, or `production` |
 | `LARP_DEBUG` | `false` | Enable FastAPI debug responses |
 | `LARP_LOG_LEVEL` | `INFO` | Python logging level |
+| `LARP_DATABASE_URL` | `postgresql+asyncpg://larp:larp@127.0.0.1:5432/larp` | Async PostgreSQL connection URL |
 
 ## Health checks
 

@@ -11,6 +11,7 @@ def test_settings_have_safe_defaults() -> None:
     assert settings.environment == "local"
     assert settings.debug is False
     assert settings.log_level == "INFO"
+    assert settings.database_url.startswith("postgresql+asyncpg://")
 
 
 def test_settings_load_prefixed_environment_variables(monkeypatch: pytest.MonkeyPatch) -> None:

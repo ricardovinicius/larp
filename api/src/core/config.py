@@ -23,6 +23,7 @@ class Settings(BaseSettings):
     environment: Environment = "local"
     debug: bool = False
     log_level: LogLevel = "INFO"
+    database_url: str = "postgresql+asyncpg://larp:larp@127.0.0.1:5432/larp"
 
     @field_validator("log_level", mode="before")
     @classmethod
