@@ -437,6 +437,16 @@ are normative.
 
 ## Implementation Plan
 
+### Local Infrastructure
+
+1. Add a `postgres` service to the root `compose.yaml` using the project's supported
+   PostgreSQL version. Configure a development database, user, password, named data volume,
+   exposed local port, and `pg_isready` health check. The checked-in values must be safe
+   development defaults and align with `api/.env.example`.
+2. Add a root `package.json` script named `db:up` that runs
+   `docker compose up --detach postgres`, allowing the development database to be started
+   with `pnpm db:up` from the repository root.
+
 ### Backend
 
 1. Add SQLAlchemy 2, an async PostgreSQL driver, and Alembic through `uv`; add typed database
@@ -509,16 +519,19 @@ UUID, constraint, and transaction behavior match production.
 
 ### Manual Verification
 
-1. Start PostgreSQL, the API, and the web application from a clean database.
-2. Create goals with past, future, and absent due dates and verify ordering/overdue labels.
-3. Create standalone and goal-associated tasks and subtasks; reload and verify persistence.
-4. Move tasks through every status and reorder tasks within each Kanban column.
-5. Toggle list/Kanban mode and filters; reload and use back/forward navigation.
-6. Verify progress changes for done, reopened, and closed tasks and subtasks.
-7. Delete a goal and verify its tasks become unassigned; attempt to delete a parent before
+1. From the repository root, run `pnpm db:up` and verify that the Compose `postgres` service
+   starts, becomes healthy, and retains data across a container restart.
+2. Start the API and web application against the Compose database from a clean schema.
+3. Create goals with past, future, and absent due dates and verify ordering/overdue labels.
+4. Create standalone and goal-associated tasks and subtasks; reload and verify persistence.
+5. Move tasks through every status and reorder tasks within each Kanban column.
+6. Toggle list/Kanban mode and filters; reload and use back/forward navigation.
+7. Verify progress changes for done, reopened, and closed tasks and subtasks.
+8. Delete a goal and verify its tasks become unassigned; attempt to delete a parent before
    and after deleting its subtasks.
-8. Complete the primary flows using only a keyboard and at a narrow mobile viewport.
-9. Run the repository's Ruff, pytest, Biome, TypeScript, Vitest, and production build checks.
+9. Complete the primary flows using only a keyboard and at a narrow mobile viewport.
+10. Run the repository's Ruff, pytest, Biome, TypeScript, Vitest, and production build
+    checks.
 
 ---
 
