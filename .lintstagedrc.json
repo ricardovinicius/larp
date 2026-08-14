@@ -3,5 +3,8 @@
     "uv --directory api run ruff check --fix",
     "uv --directory api run ruff format"
   ],
-  "web/**/*.{js,jsx,ts,tsx,json,jsonc,css}": "pnpm --dir web exec biome check --write --no-errors-on-unmatched"
+  "web/**/*.{js,jsx,ts,tsx,json,jsonc,css}": [
+    "pnpm --dir web exec biome format --write --no-errors-on-unmatched",
+    "pnpm --dir web exec biome check --write --no-errors-on-unmatched"
+  ]
 }
