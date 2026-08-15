@@ -21,29 +21,29 @@ export function TaskList(props: TaskListProps) {
 		(task) => task.parent_id === null || !visibleIds.has(task.parent_id),
 	);
 	return (
-		<div className="space-y-4">
+		<ul className="divide-y overflow-hidden rounded-2xl border bg-card/70 shadow-sm">
 			{topLevel.map((task) => {
 				const subtasks = props.tasks.filter(
 					(candidate) => candidate.parent_id === task.id,
 				);
 				return (
-					<div className="space-y-2" key={task.id}>
+					<li key={task.id}>
 						<TaskItem task={task} {...props} />
 						{subtasks.length > 0 ? (
-							<div className="ml-5 space-y-2 border-l-2 border-primary/20 pl-4 sm:ml-10">
+							<ul className="border-t bg-muted/[0.16] pl-6 sm:pl-12">
 								{subtasks.map((subtask) => (
-									<TaskItem
-										compact
+									<li
+										className="border-l border-primary/20 [&:not(:last-child)]:border-b"
 										key={subtask.id}
-										task={subtask}
-										{...props}
-									/>
+									>
+										<TaskItem nested task={subtask} {...props} />
+									</li>
 								))}
-							</div>
+							</ul>
 						) : null}
-					</div>
+					</li>
 				);
 			})}
-		</div>
+		</ul>
 	);
 }
