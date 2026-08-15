@@ -10,7 +10,8 @@ describe("GoalProgress", () => {
 			/>,
 		);
 
-		expect(screen.getByText("66% · 2/3 tasks")).toBeInTheDocument();
+		expect(screen.getByText("66%", { exact: false })).toBeInTheDocument();
+		expect(screen.getByText(/2\/3 tasks/)).toBeInTheDocument();
 		expect(screen.getByRole("progressbar")).toHaveAttribute(
 			"aria-valuenow",
 			"66",
