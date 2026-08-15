@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Columns3, List, Plus, SlidersHorizontal } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { z } from "zod";
 import { Modal } from "#/components/modal";
 import { ShortcutKey } from "#/components/shortcut-key";
@@ -21,9 +21,14 @@ import { TaskForm } from "#/features/tasks/components/task-form";
 import { TaskList } from "#/features/tasks/components/task-list";
 import { errorMessage } from "#/lib/api";
 import { acceptsKeyboardShortcut } from "#/lib/keyboard";
+import {
+	getStoredTaskView,
+	storeTaskView,
+	type TaskView,
+} from "#/lib/task-view";
 
 const taskSearchSchema = z.object({
-	view: z.enum(["list", "kanban"]).catch("list").default("list"),
+	view: z.enum(["list", "kanban"]).optional().catch(undefined),
 	goal: z.string().optional().catch(undefined),
 	closed: z
 		.preprocess((value) => value === true || value === "true", z.boolean())
@@ -42,6 +47,7 @@ interface TaskDialogState {
 
 function TasksPage() {
 	const search = Route.useSearch();
+	const view = search.view ?? getStoredTaskView();
 	const navigate = useNavigate({ from: "/tasks" });
 	const queryClient = useQueryClient();
 	const [taskDialog, setTaskDialog] = useState<TaskDialogState>();
@@ -53,6 +59,19 @@ function TasksPage() {
 		includeClosed: search.closed,
 	};
 	const tasksQuery = useQuery(tasksQueryOptions(taskFilters));
+	const changeView = useCallback(
+		(nextView: TaskView) => {
+			storeTaskView(nextView);
+			void navigate({
+				search: (previous) => ({ ...previous, view: nextView }),
+			});
+		},
+		[navigate],
+	);
+
+	useEffect(() => {
+		if (search.view) storeTaskView(search.view);
+	}, [search.view]);
 
 	const refresh = async () => {
 		await Promise.all([
@@ -105,12 +124,7 @@ function TasksPage() {
 					break;
 				case "v":
 					event.preventDefault();
-					void navigate({
-						search: (previous) => ({
-							...previous,
-							view: previous.view === "list" ? "kanban" : "list",
-						}),
-					});
+					changeView(view === "list" ? "kanban" : "list");
 					break;
 				case "c":
 					event.preventDefault();
@@ -126,7 +140,7 @@ function TasksPage() {
 
 		window.addEventListener("keydown", handleShortcut);
 		return () => window.removeEventListener("keydown", handleShortcut);
-	}, [navigate, taskDialog]);
+	}, [changeView, navigate, taskDialog, view]);
 
 	return (
 		<section className="min-w-0">
@@ -214,26 +228,18 @@ function TasksPage() {
 					>
 						<legend className="sr-only">Task view</legend>
 						<button
-							aria-pressed={search.view === "list"}
-							className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition ${search.view === "list" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
-							onClick={() =>
-								void navigate({
-									search: (previous) => ({ ...previous, view: "list" }),
-								})
-							}
+							aria-pressed={view === "list"}
+							className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition ${view === "list" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
+							onClick={() => changeView("list")}
 							type="button"
 							title="List view (V)"
 						>
 							<List aria-hidden="true" className="size-4" /> List
 						</button>
 						<button
-							aria-pressed={search.view === "kanban"}
-							className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition ${search.view === "kanban" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
-							onClick={() =>
-								void navigate({
-									search: (previous) => ({ ...previous, view: "kanban" }),
-								})
-							}
+							aria-pressed={view === "kanban"}
+							className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition ${view === "kanban" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
+							onClick={() => changeView("kanban")}
 							type="button"
 							title="Kanban view (V)"
 						>
@@ -285,7 +291,7 @@ function TasksPage() {
 						Create task
 					</button>
 				</div>
-			) : search.view === "kanban" ? (
+			) : view === "kanban" ? (
 				<TaskBoard
 					goals={goals}
 					includeClosed={search.closed}

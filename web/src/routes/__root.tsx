@@ -91,7 +91,7 @@ function RootComponent() {
 					event.preventDefault();
 					void navigate({
 						to: "/tasks",
-						search: { closed: false, view: "list" },
+						search: { closed: false },
 					});
 					break;
 				case "?":
@@ -150,7 +150,7 @@ function RootComponent() {
 								className: "bg-primary/10 text-primary",
 							}}
 							className="flex min-h-12 items-center justify-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold text-muted-foreground transition hover:bg-muted hover:text-foreground sm:justify-start"
-							search={{ closed: false, view: "list" }}
+							search={{ closed: false }}
 							title="Tasks"
 							to="/tasks"
 						>
