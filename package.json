@@ -6,6 +6,7 @@
 		"prepare": "husky",
 		"lint-staged": "lint-staged",
 		"db:up": "docker compose up --detach postgres",
+		"migrate": "uv --directory api run alembic upgrade head",
 		"dev:api": "uv --directory api run fastapi dev src/main.py",
 		"dev:web": "pnpm --dir web dev",
 		"check:api": "uv --directory api run ruff format --check . && uv --directory api run ruff check .",
